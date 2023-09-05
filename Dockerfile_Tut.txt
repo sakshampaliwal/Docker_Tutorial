@@ -1,0 +1,136 @@
+Dockerfile:
+
+- A dockerfile is a text document that contains a set of instructions to create a docker image. 
+  Docker builds images by reading the instructions from a Dockerfile.
+
+- Docker builds images automatically by reading the instructions from a Dockerfile -- a text file that contains all commands, in order, needed to build a given image.
+
+Commands in DockerFile:
+
+1. Comments: start with # and you can put anywhere those comments.
+
+2. From: Every Dockerfile must start with the FROM instruction. Represents the base image(OS)
+    It defines the base image to use to start the build process. It can be any image, including the ones you have created previously. If a FROM image is not found on the host, Docker will try to download from docker hub.
+
+3. Copy: The Dockerfile COPY command copies one or more files from the Docker host (the computer building the Docker image from the Dockerfile) into the Docker image. 
+   The COPY command can copy both a file or a directory from the Docker host to the Docker image.
+   You can als copy multiple files into a single directory in the Docker image.
+
+4. ADD: The Dockerfile ADD instruction works in the same way as the COPY instruction with a few minor differences.
+   ADD instruction can copy and extract TAR files from the Docker host to the Docker image.
+   ADD instruction can download files via HTTP and copy them into the Docker image.
+
+5. ENV: With the help of the ENV Instruction, you can set up the environment variables. You can use ENV to define the environment variable which will be available in the container.
+   Imagine you're building a Docker image for a web application. This application needs to connect to a database, and the database connection details (like host, port, username, and password) are required for it to work. 
+   Instead of hardcoding these values directly into the code, you can use environment variables to provide these values dynamically when running the container.
+   E.g: ENV DB_HOST=localhost
+        ENV DB_PORT=5432
+        ENV DB_USER=myuser
+    Now, when you run a container from the image, you can pass specific values for the environment variables:
+    -> docker run -e DB_HOST=abcd -e DB_PORT=6000 mywebapp
+
+    Here, you're overriding the default environment variable values provided in the Dockerfile with the values you're passing when running the container.
+
+6. RUN: RUN command can execute command line executables within the Docker image. The RUN command is executed during build time of the Docker image, so RUN commands are only executed once. 
+   The RUN command can be used to install applications within the Docker image, or extract files, or other command line activities which are necessary to run once to prepare the Docker image for execution.
+   E.g: -> RUN apt-get install some-needed-app
+
+7. ARG: ARG instruction lets you define an argument which can be passed to Docker when you build the Docker image from the Dockerfile.
+    is used to define build-time variables. These variables are used to pass values to the Docker build process but aren't meant to persist in the image once it's built. 
+    E.g: -> ARG ENVIRONMENT=development
+         -> RUN echo "Building for environment: $ENVIRONMENT"
+    When you build an image using this Dockerfile, you can pass a value for the ENVIRONMENT argument using the --build-arg flag:
+    -> docker build --build-arg ENVIRONMENT=production -t myimage .
+    This will override the default value of ENVIRONMENT during the build process.
+
+8. WORKDIR: It is used to set the working directory for any subsequent instructions that are executed in the container. It's similar to the cd command. 
+   E.g: WORKDIR /path/to/directory
+
+9. EXPOSE: It is used to inform Docker that a container will listen on a specific network port at runtime.
+   The expose command is similar to the -p flag.
+   E.g: -> EXPOSE 80    //line indicates that the container will listen on port 80. If you run a container based on this image, you'll need to use the -p flag when running it to actually map the exposed port to a port on the host system
+   -> docker run -p 8080:80 myimage     //Exposing port when running the container.
+   
+   You can also set which protocol is allowed to communicate on the opened port. For instance, UDP or TCP.
+   -> EXPOSE   8080/tcp 9999/udp
+
+10. VOLUME: VOLUME lets you set up a place where your container can save important stuff (like files or databases). When you run the container, you decide where that stuff gets saved on your computer.
+    It doesn't create the actual storage location; it just tells Docker to link a container folder to a location on your computer so data can be saved outside the container.
+    E.g: Let's say you have a web app that generates user-uploaded files. You want these files to be stored outside the container so they don't get lost when the container restarts. 
+    You can do this in your Dockerfile.
+    In dockerfile you will write: -> VOLUME /app/uploads
+    During running container you write: -> docker run -v /host/folder:/app/uploads myimage
+    This connects the /app/uploads folder inside the container to the /host/folder on your computer. 
+    So, any files saved to /app/uploads in the container will be saved in /host/folder on your computer.
+
+11. EntryPoint: It is used to specify the command that will be executed when a container based on the image starts.
+    When using ENTRYPOINT, you can't easily override the specified command from the command line when running the container. If you provide a command while running the container, it will be treated as arguments to the ENTRYPOINT command.
+    Syntax: ENTRYPOINT ["command", "param1", "param2"]
+    E.g: -> ENTRYPOINT ["echo", "Hello, Docker!"]
+
+    CMD vs ENTRYPOINT: 
+    *The CMD describes the default container parameters or commands. The user can easily override the default command when you use this.
+    *A container with an ENTRYPOINT is preferred when you want to define an executable. You can only override it if you use the --entrypoint flag.
+
+12. MAINTAINER:  MAINTAINER command is simply used to tell who is maintaining this Dockerfile.
+    E.g: -> MAINTAINER   Joe Blocks <joe@blocks.com>
+    The MAINTAINER instruction is not often used though, since that kind of information is also often available in GIT repositories and elsewhere.
+
+13. HEALTHCHECK: The HEALTHCHECK instruction in a Dockerfile is used to define how Docker can test the health of a container. 
+    It's particularly useful when you want to ensure that your application inside the container is running properly and responding to requests as expected.
+
+    If you’ve been using docker containers in production, you might have noticed that docker checks the status of a container by using the status of the process (PID) launched from the Docker file command. 
+    If the process is running successfully, the container is considered healthy. Although sometimes we need to know that in container is our application running properly or not then we can use this.
+    Sometimes our application crashes but container is running in that case we use this.
+    Normally status shows healthy(or up 30 min) but when we use this then we can check particular service is working properly or not.
+
+    E.g: -> HEALTHCHECK CMD curl --fail http://localhost:3000 || exit 1   
+    instruction specifies that the health of the container should be checked using the curl command to make a request to http://localhost:3000 
+    If the request fails (returns a non-zero status code), the health check will exit with a status of 1, indicating that the container is not healthy.
+    If the request returns a 200, it will return exit code 0; if the application crashes, it will return exit code 1. These exit codes are how Docker's HEALTHCHECK determines the health of the container.
+    Now if pass then it shows status as healthy otherwise unhealthy.
+
+    we can also specify interval,timeout,start period, retires etc.
+
+Best Practices:
+1. Avoid installing unnecessary packages: Docker images should be as minimal as possible. 
+
+2. Run as a Non-Root User: There are very few use cases where the container needs to execute as root, so don’t forget to include the USER instruction to change the default effective UID to a non-root user.
+   Make sure the user specified in the USER instruction exists inside the container.
+   Provide appropriate file system permissions in the locations where the process will be reading or writing.
+   if a container needs to run a very specific command as root, it may rely on sudo.
+
+3. Use a .dockerignore file: Similar to .gitignore file, you can specify files and directories inside .dockerignore file which you would like to exclude from your Docker build context. 
+   This would result in removing unnecessary files from your Docker Container, reduce the size of the Docker Image.
+
+4. Use the best order of statements: Docker images are built using a layered architecture. Each instruction in the Dockerfile creates a new layer in the image. Docker uses a caching mechanism during the image build process to improve efficiency. 
+   When you build an image, Docker checks each instruction in the Dockerfile and compares it to the layers cached from previous builds. If an instruction's context (the instruction itself along with its inputs) hasn't changed since a previous build, 
+   Docker can reuse the cached layer for that instruction instead of re-executing it. 
+   If any instruction or its context changes, all subsequent instructions will also be re-executed, generating new layers. This is important to ensure that the resulting image is up to date and reflects the latest changes.
+   Place instructions that are less likely to change towards the top of the Dockerfile.
+   Instructions that are likely to change frequently, such as application code, should be placed towards the end of the Dockerfile. This minimizes the number of invalidated layers if these instructions change.
+
+5. Expose only the ports that your application needs and avoid exposing ports like SSH (22).
+
+6. Handle Multiline Arguments: It’s inevitable that some Dockerfile instructions will become long and unwieldy. This is especially true of RUN instructions that execute commands within your container. 
+   It’s best practice to combine as many commands as possible into a single RUN instruction as this helps facilitate layer caching.
+   To mitigate this issue, you should combine multiple lines with backslashes. This makes your Dockerfile easier to read so newcomers can quickly scan through the instructions.
+
+7. MetaData Labels: It is a Dockerfile best practice to include metadata labels when building your image.
+   Labels will help in image management, like including the application version, a link to the website, how to contact the maintainer, and more.
+
+8. Use Copy instead of Add: ADD instruction is not recommended for copying files in a Dockerfile is because it has additional features beyond simple copying. These additional features can sometimes lead to unexpected behavior or security risks if not used carefully. 
+   ADD instruction is not recommended for copying files in a Dockerfile is because it has additional features beyond simple copying. These additional features can sometimes lead to unexpected behavior or security risks if not used carefully. 
+   The URL handling capability of the ADD instruction can potentially introduce security risks. 
+
+E.g: instead of this file:
+FROM ubuntu
+RUN apt-get install -y wget
+RUN wget https://…/downloadedfile.tar
+RUN tar xvzf downloadedfile.tar
+RUN rm downloadedfile.tar
+RUN apt-get remove wget
+
+Use this file:
+FROM ubuntu
+RUN apt-get install wget && wget https://…/downloadedfile.tar && tar xvzf downloadedfile.tar && rm downloadedfile.tar && apt-get remove wget
