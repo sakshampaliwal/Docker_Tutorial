@@ -1,0 +1,5 @@
+Commands:
+
+docker login
+docker tag yourimage:latest username/name_you_wanto_give:latest
+docker push username/name_you_wantto_give
