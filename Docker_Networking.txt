@@ -34,7 +34,7 @@ Bridge Network:
   launch a container specifying the exact network that we want to use:
   -> docker run --name mynginx --network abc -d nginx
   to inspect this network:
-  -> docker inspect custom
+  -> docker inspect abc
 
 Overlay Network:
 
@@ -53,6 +53,13 @@ Overlay Network:
 Host Network:
 
 - Sometimes we do not require isolation from the host, we can simply spin up container on the host network and use host network directly.
+
+- Here we use network of host rather than using any isolated network that is why it is called host networking. This is why port mapping is not required in this networking
+  and if we require to access the any port of container then we can directly access on host ports.
+  So when we inspect this network then we can see there is no ipv4 address assigned to it.
+  
+  Description given on Docker site: Given that the container does not have its own IP-address when using host mode networking, 
+  port-mapping does not take effect, and the -p, --publish, -P, and --publish-all option are ignored, producing a warning instead.
 
 - The host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.
 
