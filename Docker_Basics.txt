@@ -1,55 +1,70 @@
 Virtual Machines:
-
 - VMs run on top of a physical machine using a “hypervisor”. A hypervisor, in turn, runs on either a host machine or on “bare-metal”.
-
-- The hypervisor is the key to enable virtualization. It manages the sharing of physical resources into virtual machines. Each virtual machine runs its own guest operating system.
+- The hypervisor is the key to enable virtualization. It manages the sharing of physical resources into virtual machines. 
+  Each virtual machine runs its own guest operating system.
 
 Containers:
+- Containers and VMs are similar in their goals: to isolate an application and its 
+  dependencies into a self-contained unit that can run anywhere.
+  Moreover, containers and VMs remove the need for physical hardware, allowing for more efficient use of computing resources, 
+  both in terms of energy consumption and cost effectiveness.
 
-- Containers and VMs are similar in their goals: to isolate an application and its dependencies into a self-contained unit that can run anywhere.
-Moreover, containers and VMs remove the need for physical hardware, allowing for more efficient use of computing resources, both in terms of energy consumption and cost effectiveness.
+- Containers are lightweight software packages that contain all the dependencies 
+  required to execute the contained software application. 
+  These dependencies include things like system libraries, external third-party 
+  code packages, and other operating system level applications.
 
-- Containers are lightweight software packages that contain all the dependencies required to execute the contained software application. 
-  These dependencies include things like system libraries, external third-party code packages, and other operating system level applications.
-
-- Containers sit on top of a physical server and its host OS—typically Linux or Windows. Each container shares the host OS kernel and, usually, the binaries and libraries, too.
+- Containers sit on top of a physical server and its host OS—typically Linux or Windows. 
+  Each container shares the host OS kernel and, usually, the binaries and libraries, too.
 
 - While containers are useful when we are required to maximise the running applications using minimal servers.
-  they don’t use a hypervisor.
+  They don’t use a hypervisor.
 
 - Containers use a form of operating system (OS) virtualization. 
-  Put simply, they leverage features of the host operating system to isolate processes and control the processes’ access to CPUs, memory and desk space.
+  Put simply, they leverage features of the host operating system to isolate processes 
+  and control the processes’ access to CPUs, memory and desk space.
 
-- Unlike a virtual machine, containers do not need to include a guest OS in every instance and can, instead, simply leverage the features and resources of the host OS. 
+- Unlike a virtual machine, containers do not need to include a guest OS in every instance and 
+  can, instead, simply leverage the features and resources of the host OS. 
 
 - Containers are ephemeral in nature which means it is short lived
-Docker:
 
+Docker:
 - Docker is open-source software used to deploy applications inside virtual containers. 
 
 - Containerization allows various applications to work within different complex environments. 
-  Docker does this is by packaging an application and its dependencies in a virtual container that can run on any computer. This containerization allows for much better portability and efficiency when compared to virtual machines.
+  Docker does this is by packaging an application and its dependencies in a virtual container that can run on any computer. 
+  This containerization allows for much better portability and efficiency when compared to virtual machines.
 
-- These containers are isolated from each other and bundle their own tools, libraries, and configuration files. They can communicate with each other through well-defined channels. All containers are run by a single operating system kernel.
+- These containers are isolated from each other and bundle their own tools, libraries, and configuration files. 
+  They can communicate with each other through well-defined channels. All containers are run by a single operating system kernel.
 
 Components of Docker:
- 1. Docker Engine: Docker Engine is an application which follows client-server architecture. It is installed on the host machine. There are three components in the Docker Engine: 
+ 1. Docker Engine: Docker Engine is an application which follows client-server architecture. 
+    It is installed on the host machine. There are three components in the Docker Engine: 
     a) Server: the Docker daemon (dockerd), which is responsible for creating and managing containers.
     b) Rest API: establishes communication between programs and Docker and instructs dockerd what to do.
     c) CLI: used for running Docker commands.
 
- 2. Docker Client: Docker users can interact with Docker through a client. When any docker commands runs, the client sends them to dockerd daemon, which carries them out. 
+ 2. Docker Client: Docker users can interact with Docker through a client. When any docker commands runs, 
+    the client sends them to dockerd daemon, which carries them out. 
     Docker API is used by Docker commands. Docker client can communicate with more than one daemon.
 
- 3. Docker Registries: It is the location where the Docker images are stored. It can be a public docker registry or a private docker registry. 
-    Docker Hub is the default place of docker images, its stores’ public registry. You can also create and run your own private registry.
+ 3. Docker Registries: It is the location where the Docker images are stored. It can be a public docker registry 
+    or a private docker registry. 
+    Docker Hub is the default place of docker images, its stores’ public registry. 
+    You can also create and run your own private registry.
 
- 4. Docker Objects: When you are working with Docker, you use images, containers, volumes, networks; all these are Docker objects.
+ 4. Docker Objects: When you are working with Docker, you use images, containers, volumes, networks; 
+    all these are Docker objects.
 
- 5. Docker Images: These are read-only templates with instructions to create a docker container. Docker image can be pulled from a Docker hub and used as it is
+ 5. Docker Images: These are read-only templates with instructions to create a docker container. 
+    Docker image can be pulled from a Docker hub and used as it is.
 
- 6. Volumes: The persisting data generated by docker and used by Docker containers are stored in Volumes. They are completely managed by docker through docker CLI or Docker API. 
+ 6. Volumes: The persisting data generated by docker and used by Docker containers are stored in Volumes. 
+    They are completely managed by docker through docker CLI or Docker API. 
 
- 7. Docker DNS: Docker provides a built-in DNS service that allows containers to resolve each other by name. When a container is started on a network, Docker assigns it a hostname that corresponds to its container name. 
+ 7. Docker DNS: Docker provides a built-in DNS service that allows containers to resolve each other by name. 
+    When a container is started on a network, Docker assigns it a hostname that corresponds to its container name. 
     Containers can then resolve each other using their hostname, rather than their IP address.
 
