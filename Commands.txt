@@ -1,0 +1,54 @@
+docker run -itd image_name
+i-> i stands for interactive
+t-> t stands for tty, It allocates a pseudo-TTY (terminal) for the container, which is often used to make the container behave like a terminal.
+d-> Stands for "detached." It runs the container in the background, which means the container will start, and you'll get your command prompt back immediately without being attached to the container's console.
+
+docker exec -it ironman sh
+exec-> used to execute a command inside a running container.
+is used to run an interactive shell session inside a Docker container named "ironman." 
+
+
+
+
+
+----------
+
+
+Working with containers:
+docker run <image>: creates and starts a container based on the specified image. Example: docker run nginx
+
+docker start <container>: starts a stopped container. Example: docker start my-container
+
+docker stop <container>: stops a running container. Example: docker stop my-container
+
+docker rm <container>: removes a stopped container. Example: docker rm my-container
+
+docker ps: lists all running containers. Example: docker ps
+
+docker ps -a: lists all containers, including stopped ones. Example: docker ps -a
+
+docker logs <container>: displays the logs of a container. Example: docker logs my-container
+
+docker exec <container> <command>: runs a command inside a running container. Example: docker exec my-container ls
+
+docker inspect <container>: displays detailed information about a container. Example: docker inspect my-container
+
+
+Working with images:
+docker pull <image>: downloads an image from a registry. Example: docker pull ubuntu
+
+docker build <path>: builds an image from a Dockerfile. Example: docker build.
+
+docker tag <image> <repository>:<tag>: tags an image with a repository and tag. Example: docker tag my-image my-repo:1.0
+
+docker push <repository>:<tag>: pushes an image to a registry. Example: docker push my-repo:1.0
+
+docker rmi <image>: removes an image. Example: docker rmi my-image
+
+
+Pushing to DockerHub:
+Commands: 
+
+docker login
+docker tag yourimage:latest username/name_you_wanto_give:latest
+docker push username/name_you_wantto_give
