@@ -1,0 +1,25 @@
+Docker Compose:
+- Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. Then, with a single command, you create and start all the services from your configuration.
+- let's assume you were assigned on a project which requires at least 10 different services in a running state to run your project so it
+  will be very tedious to run docker run command again and again for 10 services, this is where docker compose comes in.
+- It allows you to define a complex application stack with multiple services, networks, and volumes in a single configuration file, making it easier to manage and deploy such applications. 
+
+Docker Compose file components:
+1. Services
+2. Networks
+3. Volumes
+4. Environment Variables
+5. Ports
+
+Commands:
+To start: docker-compose up
+To Stop: docker-compose down  //container will be stopped and destroyed
+Status of Containers: docker-compose ps
+View Logs: docker-compose logs
+Stop Container defined in yml file: docker-compose stop
+Restart container that are already running: docker-compose restart
+Start Service in detach mode: docker-compose up -d
+
+
+If you docker-compose file is in diff folder: docker compose -f /path/to/heimdall.yml up -d
+

@@ -1,0 +1,47 @@
+version: '3'  # Specify the Docker Compose version
+
+services:  # Define your services here
+  web:
+    image: nginx:latest  # Docker image for the web service
+    ports:
+      - "80:80"  # Map host port 80 to container port 80
+    volumes:
+      - web_data:/var/www/html  # Mount a volume for web server data
+    networks:
+      - mynetwork  # Attach to a custom network
+    environment:
+      - NGINX_CONFIG=/etc/nginx/nginx.conf  # Set an environment variable
+
+  app:
+    image: myapp:latest  # Docker image for the app service (replace with your app image)
+    ports:
+      - "8000:8000"  # Map host port 8000 to container port 8000
+    volumes:
+      - app_data:/app/data  # Mount a volume for app data
+    networks:
+      - mynetwork  # Attach to the same custom network
+    depends_on:
+      - database  # Ensure the app service starts after the database service
+    environment:
+      - DATABASE_URL=postgres://username:password@database/dbname  # Set an environment variable
+
+  database:
+    image: postgres:latest  # Docker image for the database service
+    ports:
+      - "5432:5432"  # Map host port 5432 to container port 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Mount a volume for database data
+    networks:
+      - mynetwork  # Attach to the same custom network
+    environment:
+      - POSTGRES_USER=username  # Set the database username
+      - POSTGRES_PASSWORD=password  # Set the database password
+      - POSTGRES_DB=dbname  # Set the default database name
+
+networks:  # Define custom networks if needed
+  mynetwork:
+
+volumes:  # Define named volumes for data persistence
+  web_data:
+  app_data:
+  db_data:
