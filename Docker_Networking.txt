@@ -5,14 +5,16 @@ Docker Networking:
 
 -Virtual machines are more flexible in some ways as they can support configurations like NAT and host networking. 
  Docker typically uses a bridge network, and while it can support host networking, that option is only available on Linux.
- To simplify, think of virtual machines as complete, independent computers running inside your computer. They can have different networking setups like NAT and directly connecting to the host's network. 
+ To simplify, think of virtual machines as complete, independent computers running inside your computer. 
+ They can have different networking setups like NAT and directly connecting to the host's network. 
  on the other hand, By default Docker uses a bridge network, which isolates containers from each other and from the host while allowing them to communicate.
 
 -When using Docker containers, network isolation is achieved using a network namespace, not an entirely separate networking stack.
 
 -You can run hundreds of containers on a single-node Docker host, so it’s required that the host can support networking at this scale. 
 
--Docker handles communication between containers by creating a default bridge network, so you often don’t have to deal with networking and can instead focus on creating and running containers. This default bridge network works in most cases, but it’s not the only option you have.
+-Docker handles communication between containers by creating a default bridge network, so you often don’t have to deal with networking and can instead focus on creating and running containers. 
+ This default bridge network works in most cases, but it’s not the only option you have.
  Docker allows you to create three different types of network drivers out-of-the-box.
  Types of Docker networks such as: Bridge Network, Host Network, None Network, MACVLAN and IPVLAN Networks, Overlay Networking
 
@@ -25,7 +27,8 @@ Bridge Network:
   The bridge network creates a private internal isolated network to the host so containers on this network can communicate.
 
 - You can use this whenever you want your containers running in isolation to connect and communicate with each other. 
-  Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, and Docker uses iptables on the host machine to prevent access outside of the bridge.
+  Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, 
+  and Docker uses iptables on the host machine to prevent access outside of the bridge.
 
 - A bridge can only connect containers running on the same host, which is a very common scenario for development environments.
   but in many cases, having everything on the same bridge can cause conflicts and other anomalies. Therefore, it can be useful to know how to create user-defined bridged networks.
