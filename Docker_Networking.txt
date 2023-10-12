@@ -19,7 +19,8 @@ Docker Networking:
  Types of Docker networks such as: Bridge Network, Host Network, None Network, MACVLAN and IPVLAN Networks, Overlay Networking
 
 - When Docker is installed, a default bridge network named  docker0 is created. Each new Docker container is automatically attached to this network, unless a custom network is specified.
-  Besides  docker0  , two other networks get created automatically by Docker:  host  (no isolation between host and containers on this network, to the outside world they are on the same network) and  none  (attached containers run on container-specific network stack).
+  Besides  docker0  , two other networks get created automatically by Docker:  host  (no isolation between host and containers on this network, 
+  to the outside world they are on the same network) and  none  (attached containers run on container-specific network stack).
 
 Bridge Network:
 
