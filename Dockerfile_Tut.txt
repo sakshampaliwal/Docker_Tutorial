@@ -44,7 +44,7 @@ Commands in DockerFile:
    E.g: -> RUN apt-get install some-needed-app
 
 7. ARG: ARG instruction lets you define an argument which can be passed to Docker when you build the Docker image from the Dockerfile.
-   is used to define build-time variables. These variables are used to pass values to the Docker build process but aren't meant 
+   It is used to define build-time variables. These variables are used to pass values to the Docker build process but aren't meant 
    to persist in the image once it's built. 
    E.g: -> ARG ENVIRONMENT=development
          -> RUN echo "Building for environment: $ENVIRONMENT"
