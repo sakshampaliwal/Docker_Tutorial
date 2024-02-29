@@ -1,0 +1,90 @@
+CMD: Sets default parameters that can be overridden from the Docker command line interface (CLI) while running a docker container.
+
+ENTRYPOINT: Sets default parameters that cannot be overridden while executing Docker containers with CLI parameters.
+
+When Docker runs a container, it needs to determine what command or process should be executed within the container. This is where CMD instructions come into play. CMD is an instruction in a Dockerfile that specifies the default command to be executed when the container starts.
+However, Docker allows you to override this default command by providing additional arguments when running the container. When you run a container with Docker, you typically use the docker run command followed by the name of the image and any additional arguments.
+
+/bin/sh is the default shell binary on many Unix-like systems, including Linux distributions.
+-c is a command-line option for shells that allows them to take a command as an argument rather than reading it from standard input or a script file.
+
+Docker uses /bin/sh -c as the entrypoint, it means that it's invoking the shell (/bin/sh) and passing the subsequent command to be executed (-c). This setup allows Docker to quickly execute commands by leveraging the shell's parsing capabilities. For example, docker run <image> echo "Hello, world!" would be interpreted as /bin/sh -c echo "Hello, world!", resulting in the execution of the echo command within the container.
+
+Docker has a default entrypoint which is /bin/sh -c but does not have a default command.
+
+When you run docker like this: docker run -i -t ubuntu bash the entrypoint is the default /bin/sh -c, the image is ubuntu and the command is bash.
+
+
+E.g:
+Dockerfile:
+FROM ubuntu
+CMD ["echo", "Hello World"]
+
+Building the image: docker build -t img_name .
+Running Container: docker run img_name
+
+Since we didn't provide any additional arguments, Docker executes the default CMD instruction, which is echo "Hello World". So, the output you'll see is:
+Hello World
+
+You can override the default CMD instruction by providing additional arguments when running the container. For example: 
+docker run img_name echo "Message Changed"
+
+So, instead of executing the default CMD, Docker executes the command we provided. The output will be: Message Changed
+
+
+Note: If multiple CMD instructions are passed in a Dockerfile, all except the last instruction will be ignored.
+
+However, in the case of ENTRYPOINT we cannot override the ENTRYPOINT instructions by adding command-line parameters to the docker run command. 
+The default nature of ENTRYPOINT in Dockerfile is not to be overridden by parameters passed in command, but with some explicit docker flags, it can be overriden.
+If you want to override the ENTRYPOINT instructions, execute the following command:
+docker run --entrypoint printenv entrypoint-instructions
+
+The command passed in --entrypoint argument is temporary and once your exit out of the container and run the container again, it would take the default ENTRYPOINT instructions if --entrypoint is not passed explicitly.
+
+------
+There are fundamental differences between ENTRYPOINT and CMD but there can be many situations in which combining both would be the best solution for the Docker container.
+
+FROM ubuntu
+ENTRYPOINT ["echo", "Hello"]
+CMD ["Abhinav"]
+
+When you run a container using this image, the entrypoint (echo Hello) is executed first.
+The CMD instruction (Abhinav) is appended as arguments to the entrypoint command.
+So, effectively, it's equivalent to running /bin/sh -c echo "Hello" "Abhinav".
+
+
+Prefer ENTRYPOINT to CMD when building executable Docker images, and you need a command always to be executed. Additionally, use CMD if you need to provide extra default arguments that could be overwritten from the command line when the docker container runs. 
+
+
+Exec Form:
+In "exec" form, the command is provided as a JSON array, as shown in the examples above.
+This form is preferred over the "shell" form (where the command is provided as a string) because it avoids potential issues with interpreting shell characters and improves security by preventing shell injection attacks.
+When using ENTRYPOINT and CMD, it's recommended to always keep them in "exec" form for consistency and security reasons.
+
+let's consider a case where you don't use the exec form for ENTRYPOINT and CMD. 
+
+FROM ubuntu
+
+# Using shell form for ENTRYPOINT
+ENTRYPOINT echo "Hello $NAME"
+
+# Set CMD in shell form
+CMD "world"
+
+suppose someone builds and runs the container with the following command:
+docker run -e NAME="; echo 'Vulnerable!'" my-image
+
+The output might be unexpected or even harmful if the injected shell command (echo 'Vulnerable!') is executed.
+
+Now let's consider a Dockerfile with the same functionality but using the exec form:
+FROM ubuntu
+
+# Using exec form for ENTRYPOINT
+ENTRYPOINT ["echo", "Hello $NAME"]
+
+# Set CMD in exec form
+CMD ["world"]
+
+This will not execute the injected shell command. The exec form passes the command and its arguments directly to the program without shell interpretation, thus avoiding the injection vulnerability.
+
+
