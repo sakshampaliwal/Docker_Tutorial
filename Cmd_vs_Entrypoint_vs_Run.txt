@@ -88,3 +88,26 @@ CMD ["world"]
 This will not execute the injected shell command. The exec form passes the command and its arguments directly to the program without shell interpretation, thus avoiding the injection vulnerability.
 
 
+RUN Command:
+RUN is used to execute commands during the build process of a Docker image. It is used to run commands within the Docker image filesystem to install packages, set up configurations, and perform any necessary setup tasks.
+
+RUN is used during the image build process to execute commands to modify the image filesystem, while CMD is used to define the command to run when the container is launched.
+RUN creates new image layers and makes changes to the image, while CMD does not affect the image itself but specifies the default command to execute in the container.
+RUN is used to set up the environment and dependencies within the Docker image, while CMD is used to specify the default behavior of the container when it starts.
+
+---
+docker exec command:
+When you execute the docker exec command, you're instructing Docker to run a command inside a running container. 
+Similar to the docker run command, Docker uses /bin/sh -c as the entry point to invoke a shell inside the container.
+The specified command is passed to the shell (/bin/sh) using the -c option. The shell then executes the provided command within the container's environment.
+E.g: docker exec my_container ls
+
+docker exec -it my_container /bin/bash : This command opens an interactive terminal session (-it) within the my_container container, using /bin/bash as the shell.
+
+docker exec -itd my_container /bin/bash : The command will execute but won't be interactive because of the -d flag.
+
+-it requests an interactive terminal session, implying that you want to interact with the shell directly.
+-d requests the command to be run in detached mode, meaning it runs in the background without interaction.
+
+
+
