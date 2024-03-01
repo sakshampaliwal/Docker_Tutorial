@@ -52,6 +52,16 @@ Commands in DockerFile:
    -> docker build --build-arg ENVIRONMENT=production -t myimage .
    This will override the default value of ENVIRONMENT during the build process.
 
+  What if there is lots of arguments?
+  docker build --build-arg-file=args.txt -t IMAGE_NAME:TAG .
+
+  args.txt will look like this:
+  ARG1=value1
+  ARG2=value2
+  ARG3=value3
+  ...
+
+
 8. WORKDIR: It is used to set the working directory for any subsequent instructions that are executed in the container. It's similar to the cd command. 
    E.g: WORKDIR /path/to/directory
 
