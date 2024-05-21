@@ -1,0 +1,14 @@
+1. Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock:
+Docker typically requires root privileges to run because it interacts directly with the kernel and requires access to system-level resources. 
+However, running Docker commands with root privileges can pose security risks and is not always convenient. 
+To allow a non-root user to run Docker commands without requiring elevated privileges, the user needs to be added to the Docker group. 
+Running Docker as root can expose your system to potential security vulnerabilities. By adding a user to the Docker group, you limit the need for root access, reducing the attack surface.
+The Docker group is a Unix group that grants its members permissions to communicate with the Docker daemon, which runs as a background service (dockerd). 
+Here is how things work:
+Docker Daemon: The Docker daemon (dockerd) handles Docker commands from clients, manages Docker objects (containers, images, networks, etc.), and communicates with the operating system to manage resources.
+
+Unix Socket: By default, Docker listens for client requests on a Unix socket (/var/run/docker.sock). The socket file is owned by the root user and belongs to the docker group.
+
+Permissions: When a user is added to the Docker group, they are granted read and write permissions to the Docker socket. This allows them to send commands to the Docker daemon without requiring root privileges.
+Solution: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+
