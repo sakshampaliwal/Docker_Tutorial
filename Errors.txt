@@ -10,5 +10,5 @@ Docker Daemon: The Docker daemon (dockerd) handles Docker commands from clients,
 Unix Socket: By default, Docker listens for client requests on a Unix socket (/var/run/docker.sock). The socket file is owned by the root user and belongs to the docker group.
 
 Permissions: When a user is added to the Docker group, they are granted read and write permissions to the Docker socket. This allows them to send commands to the Docker daemon without requiring root privileges.
-Solution: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+Solution: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue  or sudo chown $USER /var/run/docker.sock
 
