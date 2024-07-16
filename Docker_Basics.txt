@@ -68,3 +68,6 @@ Components of Docker:
     When a container is started on a network, Docker assigns it a hostname that corresponds to its container name. 
     Containers can then resolve each other using their hostname, rather than their IP address.
 
+Important Points:
+1. Docker containers only exist as long as a process is running within it, otherwise it terminates itself to save resources. To bypass this  include sleep infinity to keep containers alive.
+   E.g: docker run -d --name ubuntu-container ubuntu sleep infinity
